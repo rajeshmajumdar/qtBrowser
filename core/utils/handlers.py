@@ -62,6 +62,13 @@ class ResponseHandler:
         version, status, explaination = statusline.split(" ", 2)
         return status
 
+    def _set_content_encoding(self, headers):
+        if headers.has_key('content-encoding'):
+            if headers['content_encoding'] == 'gzip':
+                CONSTANTS.CONTENT_ENCODED_GZIP = True
+        else:
+            pass
+
     def get_headers_and_body(self):
         headers = {}
         while True:
@@ -70,6 +77,7 @@ class ResponseHandler:
             header, value = line.split(":", 1)
             headers[header.lower()] = value.strip()
 
+        self._set_content_encoding(headers)
         body = self._response.read()
 
         return headers, body

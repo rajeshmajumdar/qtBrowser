@@ -6,3 +6,5 @@ class CONSTANTS:
 
     USER_AGENT = "qtBrowser/0.6.9"
     FILE_SCHEME_PORT = -1
+
+    CONTENT_ENCODED_GZIP = False

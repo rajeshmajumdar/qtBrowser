@@ -23,7 +23,10 @@ class Request:
         if self._port != CONSTANTS.FILE_SCHEME_PORT:
             if CONSTANTS.SCHEME_IS_HTTPS:
                 ctx = ssl.create_default_context()
-                self._socket = ctx.wrap_socket(self._socket, server_hostname=self._host)
+                self._socket = ctx.wrap_socket(
+                    self._socket,
+                    server_hostname=self._host)
+
             self._socket.connect((self._host, self._port))
             return True
         else:
@@ -42,10 +45,11 @@ class Request:
             resp_header += f"Host: {self._host}\r\n\r\n".encode("utf8")
             resp_header += "Connection: close\r\n".encode("utf8")
             resp_header += f"User-Agent: {CONSTANTS.USER_AGENT}".encode("utf8")
+            resp_header += "Accept-Encoding: gzip".encode("utf8")
 
             self._socket.send(resp_header)
 
-            self._response = self._socket.makefile("r", encoding="utf8", newline="\r\n")
+            self._response = self._socket.makefile("rb", newline="\r\n")
             return self._response
 
     def _handle_file_scheme(self):

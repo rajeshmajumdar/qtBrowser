@@ -1,5 +1,8 @@
 import re
 from typing import Dict
+from gzip import decompress
+
+from .constants import CONSTANTS
 
 # TODO: Currently just skipping the brackets, need a better implementation.
 def show_content(body: str, tag: str) -> None:
@@ -16,6 +19,9 @@ def show_content(body: str, tag: str) -> None:
         print(e)
 
 def parse(body: str) -> Dict:
+    if CONSTANTS.CONTENT_ENCODED_GZIP:
+        body = decompress(body)
+
     content: Dict = {}
     body = re.sub('&lt;', '<', body)
     body = re.sub('&gt;', '>', body)
@@ -26,4 +32,6 @@ def parse(body: str) -> Dict:
     return content
 
 def show_source(body: str) -> None:
+    body = re.sub('&lt;', '<', body)
+    body = re.sub('&gt;', '>', body)
     print(body)

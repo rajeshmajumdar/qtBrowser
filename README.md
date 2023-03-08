@@ -13,7 +13,8 @@ $ python3 browser.py <url|empty>
 - [x] Open local files.
 - [x] Support for entities i.e. `&lt;` & `&gt;`.
 - [x] Support for `view-source:<url>`.
-- [ ] Add support for encodings.
+- [x] Add support for compression.
+- [ ] Add support for `Transfer-Encoding: chunked`.
 - [ ] Handle redirects.
 - [ ] Handle HTTP errors properly.
 - [ ] Caching.
