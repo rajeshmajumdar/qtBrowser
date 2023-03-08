@@ -1,4 +1,5 @@
 from .constants import CONSTANTS
+from .errors import *
 
 class RequestHandler:
     def __init__(self, url: str):
@@ -20,8 +21,18 @@ class RequestHandler:
         return host, path
 
     def _handle_https(self):
-        self._url = self._url[len('https://')]
+        self._url = self._url[len('https://'):]
         host, path = self._get_host_and_path(self._url)
+        return host, path
+
+    def _handle_view_source(self):
+        self._url = self._url[len('view-source:'):]
+        if CONSTANTS.SCHEME_IS_HTTP:
+            host, path = self._handle_http()
+        elif CONSTANTS.SCHEME_IS_HTTPS:
+            host, path = self._handle_https()
+        else:
+            unsupported_url_scheme(scheme)
         return host, path
 
     def _handle_file(self):
@@ -29,15 +40,18 @@ class RequestHandler:
         return filepath, 0
 
     def handle_url(self):
-        if CONSTANTS.SCHEME_IS_HTTPS:
+        if CONSTANTS.SCHEME_IS_HTTPS and not CONSTANTS.SCHEME_IS_VIEW_SOURCE:
             host, path = self._handle_https()
             return host, self._port, path
-        elif CONSTANTS.SCHEME_IS_HTTP:
+        elif CONSTANTS.SCHEME_IS_HTTP and not CONSTANTS.SCHEME_IS_VIEW_SOURCE:
             host, path = self._handle_http()
             return host, self._port, path
-        elif CONSTANTS.SCHEME_IS_FILE:
+        elif CONSTANTS.SCHEME_IS_FILE and not CONSTANTS.SCHEME_IS_VIEW_SOURCE:
             host, path = self._handle_file()
             return host, CONSTANTS.FILE_SCHEME_PORT, path
+        elif CONSTANTS.SCHEME_IS_VIEW_SOURCE:
+            host, path = self._handle_view_source()
+            return host, self._port, path
 
 class ResponseHandler:
     def __init__(self, response):
@@ -57,6 +71,5 @@ class ResponseHandler:
             headers[header.lower()] = value.strip()
 
         body = self._response.read()
-        self._s.close()
 
         return headers, body

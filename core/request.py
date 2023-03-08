@@ -2,7 +2,7 @@ import socket
 import ssl
 
 from .utils import schemes
-from .utils.parser import show_content, parse
+from .utils.parser import show_content, parse, show_source
 from .utils.handlers import RequestHandler, ResponseHandler
 from .utils.constants import CONSTANTS
 
@@ -23,14 +23,14 @@ class Request:
         if self._port != CONSTANTS.FILE_SCHEME_PORT:
             if CONSTANTS.SCHEME_IS_HTTPS:
                 ctx = ssl.create_default_context()
-                self._socket = ctx.wrap_socket(self._s, server_hostname=self._host)
+                self._socket = ctx.wrap_socket(self._socket, server_hostname=self._host)
             self._socket.connect((self._host, self._port))
             return True
         else:
             return False
 
-    def _make_get_request(self):
-        if not self._connect_socket() and self._port != CONSTANTS.FILE_SCHEME_PORT:
+    def _make_get_request(self, socket_status):
+        if not socket_status and self._port != CONSTANTS.FILE_SCHEME_PORT:
             print("[!] Something went wrong while creating a socket.")
 
         elif self._port == CONSTANTS.FILE_SCHEME_PORT:
@@ -67,14 +67,18 @@ class Request:
         return headers, body
 
     def make(self):
-        self._connect_socket()
-        self._make_get_request()
+        socket_status = self._connect_socket()
+        self._make_get_request(socket_status)
         headers, body = self._handle_response()
+        self._socket.close()
         return headers, body
 
 
 def load(url) -> None:
     if url == '': url = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'
     headers, body = Request(url).make()
-    cnt = parse(body)
-    show_content(cnt, 'body')
+    if CONSTANTS.SCHEME_IS_VIEW_SOURCE:
+        show_source(body)
+    else:
+        cnt = parse(body)
+        show_content(cnt, 'body')

@@ -24,3 +24,6 @@ def parse(body: str) -> Dict:
     content['title'] = title.group(0)
     content['body'] = body.group(0)
     return content
+
+def show_source(body: str) -> None:
+    print(body)

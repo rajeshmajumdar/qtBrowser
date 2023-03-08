@@ -12,7 +12,7 @@ $ python3 browser.py <url|empty>
 - [x] Open a default html when executed without url.
 - [x] Open local files.
 - [x] Support for entities i.e. `&lt;` & `&gt;`.
-- [ ] Support for `view:source//<url>`.
+- [x] Support for `view-source:<url>`.
 - [ ] Add support for encodings.
 - [ ] Handle redirects.
 - [ ] Handle HTTP errors properly.
