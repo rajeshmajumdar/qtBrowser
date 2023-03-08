@@ -11,7 +11,7 @@ $ python3 browser.py <url|empty>
 - [x] Create a hashmap from the html.
 - [x] Open a default html when executed without url.
 - [x] Open local files.
-- [ ] Support for entities i.e. `&lt;` & `&gt;`.
+- [x] Support for entities i.e. `&lt;` & `&gt;`.
 - [ ] Support for `view:source//<url>`.
 - [ ] Add support for encodings.
 - [ ] Handle redirects.

@@ -11,7 +11,7 @@ def handle_file(url: str) -> None:
         content = f.read()
         f.close()
     cnt = parse(content)
-    show_content(cnt['body'])
+    show_content(cnt, 'body')
     sys.exit(1)
 
 def request(url: str) -> (Dict, str):
@@ -77,4 +77,4 @@ def load(url) -> None:
     if url == '': url = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'
     headers, body = request(url)
     cnt = parse(body)
-    show_content(cnt['body'])
+    show_content(cnt, 'body')
