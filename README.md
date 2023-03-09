@@ -3,8 +3,16 @@ Goal is to make a bare minimum browser-engine with minimal dependencies in pytho
 
 ## Install
 ```bash
+$ pip3 install -r requirements.txt
 $ python3 browser.py <url|empty>
 ```
+
+## Dependencies
+- `tkinter`
+- `io`
+- `socket`
+- `ssl`
+- `typing`
 
 ## Roadmap
 - [x] Support `http://`, `https://` & `file://` scheme.
