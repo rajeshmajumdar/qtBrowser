@@ -1,5 +1,5 @@
+from io import BytesIO
 from .constants import CONSTANTS
-from .errors import *
 
 
 class RequestHandler:
@@ -70,6 +70,26 @@ class ResponseHandler:
         else:
             pass
 
+    def _handle_chunked_transfer(self, headers, body):
+        content = ''
+        if 'transfer-encoding' in headers:
+            if headers['transfer-encoding'] == 'chunked':
+                body = BytesIO(body)
+                while True:
+                    line = body.readline().strip()
+                    content_length = int(line, 16)
+
+                    if content_length != 0:
+                        content += body.read(content_length).decode("utf8")
+                        content += "\r\n"
+                    body.readline()
+
+                    if content_length == 0:
+                        break
+                return content
+        else:
+            return body
+
     def get_headers_and_body(self):
         headers = {}
         while True:
@@ -80,5 +100,6 @@ class ResponseHandler:
 
         self._set_content_encoding(headers)
         body = self._response.read()
+        body = self._handle_chunked_transfer(headers, body)
 
         return headers, body
