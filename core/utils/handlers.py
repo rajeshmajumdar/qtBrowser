@@ -1,6 +1,7 @@
 from .constants import CONSTANTS
 from .errors import *
 
+
 class RequestHandler:
     def __init__(self, url: str):
         self._url = url
@@ -58,12 +59,12 @@ class ResponseHandler:
         self._response = response
 
     def get_status_code(self):
-        statusline = self._response.readline()
+        statusline = (self._response.readline()).decode("utf8")
         version, status, explaination = statusline.split(" ", 2)
         return status
 
     def _set_content_encoding(self, headers):
-        if headers.has_key('content-encoding'):
+        if 'content-encoding' in headers:
             if headers['content_encoding'] == 'gzip':
                 CONSTANTS.CONTENT_ENCODED_GZIP = True
         else:
@@ -72,7 +73,7 @@ class ResponseHandler:
     def get_headers_and_body(self):
         headers = {}
         while True:
-            line = self._response.readline()
+            line = (self._response.readline()).decode("utf8")
             if line == "\r\n": break
             header, value = line.split(":", 1)
             headers[header.lower()] = value.strip()

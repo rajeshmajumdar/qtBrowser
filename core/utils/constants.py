@@ -8,3 +8,5 @@ class CONSTANTS:
     FILE_SCHEME_PORT = -1
 
     CONTENT_ENCODED_GZIP = False
+
+    DEFAULT_HTML_FILE = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'

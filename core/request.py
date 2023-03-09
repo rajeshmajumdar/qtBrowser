@@ -6,6 +6,7 @@ from .utils.parser import show_content, parse, show_source
 from .utils.handlers import RequestHandler, ResponseHandler
 from .utils.constants import CONSTANTS
 
+
 class Request:
     def __init__(self, url):
         self._url = url
@@ -79,7 +80,8 @@ class Request:
 
 
 def load(url) -> None:
-    if url == '': url = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'
+    if url == '':
+        url = CONSTANTS.DEFAULT_HTML_FILE
     headers, body = Request(url).make()
     if CONSTANTS.SCHEME_IS_VIEW_SOURCE:
         show_source(body)
