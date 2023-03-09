@@ -2,7 +2,7 @@ import socket
 import ssl
 
 from .utils import schemes
-from .utils.parser import show_content, parse, show_source
+from .utils.parser import lex, parse, show_source
 from .utils.handlers import RequestHandler, ResponseHandler
 from .utils.constants import CONSTANTS
 
@@ -111,4 +111,5 @@ def load(url) -> None:
         show_source(body)
     else:
         cnt = parse(body)
-        show_content(cnt, 'body')
+        text = lex(cnt, 'body')
+        return text

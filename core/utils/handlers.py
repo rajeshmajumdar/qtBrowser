@@ -59,6 +59,7 @@ class RequestHandler:
             host, path = self._handle_view_source()
             return host, self._port, path
 
+
 class ResponseHandler:
     def __init__(self, response):
         self._response = response

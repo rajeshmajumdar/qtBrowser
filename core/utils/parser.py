@@ -4,9 +4,12 @@ from gzip import decompress
 
 from .constants import CONSTANTS
 
+from .dev import DEBUG
+
 
 # TODO: Currently just skipping the brackets, need a better implementation.
-def show_content(body: str, tag: str) -> None:
+def lex(body: str, tag: str) -> str:
+    text = ""
     in_angle = False
     try:
         for c in body[tag]:
@@ -15,9 +18,13 @@ def show_content(body: str, tag: str) -> None:
             elif c == ">":
                 in_angle = False
             elif not in_angle:
-                print(c, end="")
+                text += c
     except Exception as e:
         print(e)
+
+    DEBUG("Text starts here:\n" + text)
+
+    return text
 
 
 def handle_entities(body: str) -> str:
@@ -35,7 +42,7 @@ def handle_entities(body: str) -> str:
         '&reg;': '®',
     }
     for entity in entities.keys():
-        body = re.sub(entity, entities[entity], body)
+       body = re.sub(entity, entities[entity], body)
 
     return body
 

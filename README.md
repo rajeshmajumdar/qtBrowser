@@ -16,5 +16,8 @@ $ python3 browser.py <url|empty>
 - [x] Add support for compression.
 - [x] Add support for `Transfer-Encoding: chunked`.
 - [x] Handle redirects.
+- [x] Basic GUI (using Tkinter for this).
+- [x] Text-wrap and Scrolling.
+- [ ] Add maximum redirect limits.
 - [ ] Handle HTTP errors properly.
 - [ ] Caching.

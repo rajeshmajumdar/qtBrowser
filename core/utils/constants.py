@@ -1,4 +1,5 @@
 class CONSTANTS:
+    # Don't change these, unless you know what you're doing
     SCHEME_IS_HTTP = False
     SCHEME_IS_HTTPS = False
     SCHEME_IS_FILE = False
@@ -13,4 +14,13 @@ class CONSTANTS:
 
     DEFAULT_HTML_FILE = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'
 
+    # Change this to True for debugging information
     DEBUG = False
+
+    # You can change these to tweak settings
+    WINDOW_HEIGHT = 600
+    WINDOW_WIDTH = 800
+    SCROLL_STEP = 100
+
+    DOWN_KEYBINDING = "j"
+    UP_KEYBINDING = "k"
