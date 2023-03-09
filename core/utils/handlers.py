@@ -1,5 +1,10 @@
 from io import BytesIO
+
 from .constants import CONSTANTS
+from .schemes import reset_schemes, set_scheme
+from .errors import *
+
+from .dev import DEBUG
 
 
 class RequestHandler:

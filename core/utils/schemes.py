@@ -1,6 +1,7 @@
 from .constants import CONSTANTS
 from .errors import *
 
+
 def set_scheme(url):
     if url.startswith('http://'):
         CONSTANTS.SCHEME_IS_HTTP = True
@@ -14,7 +15,17 @@ def set_scheme(url):
     elif url.startswith('view-source:http://'):
         CONSTANTS.SCHEME_IS_VIEW_SOURCE = True
         CONSTANTS.SCHEME_IS_HTTP = True
+    elif url.startswith('/'):
+        CONSTANTS.SCHEME_IS_PATH = True
     else:
         scheme = url.split(':')[0]
         scheme = scheme + "://"
-        unknown_url_scheme(scheme)
+        unsupported_url_scheme(scheme)
+
+
+def reset_schemes():
+    CONSTANTS.SCHEME_IS_HTTP = False
+    CONSTANTS.SCHEME_IS_HTTPS = False
+    CONSTANTS.SCHEME_IS_FILE = False
+    CONSTANTS.SCHEME_IS_VIEW_SOURCE = False
+    CONSTANTS.SCHEME_IS_PATH = False
