@@ -9,6 +9,9 @@ class CONSTANTS:
     USER_AGENT = "qtBrowser/0.6.9"
     FILE_SCHEME_PORT = -1
 
+    TEXT_OBJECT_TYPE = "TEXT"
+    TAG_OBJECT_TYPE = "TAG"
+
     CONTENT_ENCODED_GZIP = False
     MAX_REDIRECT_LIMIT = 3
 
@@ -16,11 +19,3 @@ class CONSTANTS:
 
     # Change this to True for debugging information
     DEBUG = False
-
-    # You can change these to tweak settings
-    WINDOW_HEIGHT = 600
-    WINDOW_WIDTH = 800
-    SCROLL_STEP = 100
-
-    DOWN_KEYBINDING = "j"
-    UP_KEYBINDING = "k"

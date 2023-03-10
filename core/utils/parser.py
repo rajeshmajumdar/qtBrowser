@@ -3,22 +3,33 @@ from typing import Dict
 from gzip import decompress
 
 from .constants import CONSTANTS
+from .text import Text, Tag
 
 from .dev import DEBUG
 
 
 # TODO: Currently just skipping the brackets, need a better implementation.
 def lex(body: str, tag: str) -> str:
+    output = []
     text = ""
-    in_angle = False
+    in_tags = False
     try:
         for c in body[tag]:
             if c == "<":
-                in_angle = True
+                in_tags = True
+                if text:
+                    output.append(Text(text))
+                text = ""
             elif c == ">":
-                in_angle = False
-            elif not in_angle:
+                in_tags = False
+                output.append(Tag(text))
+                text = ""
+            else:
                 text += c
+        if not in_tags and text:
+            output.append(Text(text))
+
+        return output
     except Exception as e:
         print(e)
 

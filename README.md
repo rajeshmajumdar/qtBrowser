@@ -1,5 +1,5 @@
-# qt Browser Engine
-Goal is to make a bare minimum browser-engine with minimal dependencies in python3.
+# qt Browser
+A simple terminal based browser.
 
 ## Install
 ```bash
@@ -8,7 +8,7 @@ $ python3 browser.py <url|empty>
 ```
 
 ## Dependencies
-- `tkinter`
+- `curses`
 - `io`
 - `socket`
 - `ssl`
@@ -24,8 +24,12 @@ $ python3 browser.py <url|empty>
 - [x] Add support for compression.
 - [x] Add support for `Transfer-Encoding: chunked`.
 - [x] Handle redirects.
-- [x] Basic GUI (using Tkinter for this).
-- [x] Text-wrap and Scrolling.
+- [x] ~~Basic GUI (using Tkinter for this).~~
+- [x] ~~Text-wrap and Scrolling.~~
+- [ ] ~~Make browser resizable.~~
+- [ ] ~~Add the zoom-in and zoom-out feature.~~
+- [x] Add a basic TUI.
 - [ ] Add maximum redirect limits.
 - [ ] Handle HTTP errors properly.
 - [ ] Caching.
+- [ ] Add support for emojis.

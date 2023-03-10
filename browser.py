@@ -1,57 +1,40 @@
-import tkinter
-from typing import List
+import curses
 
 from core import request
 from core.utils.constants import CONSTANTS
 
-
-class Browser:
+class Terminal:
     def __init__(self):
-        self._window = tkinter.Tk()
-        self._canvas = tkinter.Canvas(
-            self._window,
-            width=CONSTANTS.WINDOW_WIDTH,
-            height=CONSTANTS.WINDOW_HEIGHT
-        )
-        self._canvas.pack()
-        self._scroll = 0
-        self._window.bind(
-            "<Button-4>",
-            self._scrollDown)
+        self._stdscr = curses.initscr()
+        self._stdscr.clear()
 
-    def _scrollDown(self, e):
-        self._scroll += CONSTANTS.SCROLL_STEP
-        self._draw()
+    def _setup_curses(self):
+        curses.noecho()
+        curses.cbreak()
+        self._stdscr.keypad(True)
 
-    def _layout(self, content) -> List:
-        HSTEP, VSTEP = 13, 18
-        cursor_x, cursor_y = HSTEP, VSTEP
-        display_content = []
+    def _stop_curses(self):
+        curses.echo()
+        curses.nocbreak()
+        self._stdscr.keypad(False)
+        curses.endwin()
+
+    def _load(self, url):
+        content = request.load(url)
         for cnt in content:
-            if cnt == '\n':
-                cursor_y += VSTEP + 10
-                cursor_x = HSTEP
-            display_content.append((cursor_x, cursor_y, cnt))
-            if cursor_x >= CONSTANTS.WINDOW_WIDTH - HSTEP:
-                cursor_y += VSTEP
-                cursor_x = HSTEP
-            cursor_x += HSTEP
-        return display_content
+            if cnt.type() == CONSTANTS.TEXT_OBJECT_TYPE:
+                self._stdscr.addstr(cnt.get_str())
 
-    def _draw(self):
-        self._canvas.delete("all")
-        VSTEP = 18
-        for x, y, c in self._display_content:
-            if y > self._scroll + CONSTANTS.WINDOW_HEIGHT:
-                continue
-            if y + VSTEP < self._scroll:
-                continue
-            self._canvas.create_text(x, y - self._scroll, text=c)
+        self._stdscr.refresh()
 
-    def load(self, url):
-        text = request.load(url)
-        self._display_content = self._layout(text)
-        self._draw()
+    def start(self, url):
+        self._setup_curses()
+        self._load(url)
+        while True:
+            c = self._stdscr.getch()
+            if c == ord('q'):
+                self._stop_curses()
+                break
 
 
 if __name__ == "__main__":
@@ -61,7 +44,4 @@ if __name__ == "__main__":
     except IndexError:
         url = ''
 
-    #print(request.load(url))
-
-    Browser().load(url)
-    tkinter.mainloop()
+    Terminal().start(url)
