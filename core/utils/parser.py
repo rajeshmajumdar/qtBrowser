@@ -33,8 +33,6 @@ def lex(body: str, tag: str) -> str:
     except Exception as e:
         print(e)
 
-    DEBUG("Text starts here:\n" + text)
-
     return text
 
 

@@ -1,7 +1,7 @@
 import socket
 import ssl
 
-from .utils import schemes
+from .utils import urls
 from .utils.parser import lex, parse, show_source
 from .utils.handlers import RequestHandler, ResponseHandler
 from .utils.constants import CONSTANTS
@@ -11,13 +11,14 @@ from .utils.dev import DEBUG
 
 class Request:
     def __init__(self, url):
-        self._url = url
+        urls.set_scheme(url)
+        self._url = urls.clean_url(url)
         self._request = RequestHandler(self._url)
 
     def _connect_socket(self):
-        schemes.set_scheme(self._url)
+        urls.reset_schemes()
+        urls.set_scheme(self._url)
         self._host, self._port, self._path = self._request.handle_url()
-        DEBUG(f"{self._host} - {self._path}")
         self._socket = socket.socket(
             family=socket.AF_INET,
             type=socket.SOCK_STREAM,
@@ -63,17 +64,16 @@ class Request:
         return "FILE", content
 
     def _handle_redirects(self, headers):
-        schemes.reset_schemes()
+        urls.reset_schemes()
         try:
             location = headers['location']
-            schemes.set_scheme(location)
+            urls.set_scheme(location)
             if CONSTANTS.SCHEME_IS_PATH:
                 location = self._host + location
                 CONSTANTS.SCHEME_IS_PATH = False
             else:
                 location = location
 
-            DEBUG(location)
             headers, body = Request(location).make()
             return headers, body
         except KeyError:
@@ -95,7 +95,6 @@ class Request:
         return headers, body
 
     def make(self):
-        DEBUG(self._url)
         socket_status = self._connect_socket()
         self._make_get_request(socket_status)
         headers, body = self._handle_response()

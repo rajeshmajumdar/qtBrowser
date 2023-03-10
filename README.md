@@ -29,6 +29,7 @@ $ python3 browser.py <url|empty>
 - [ ] ~~Make browser resizable.~~
 - [ ] ~~Add the zoom-in and zoom-out feature.~~
 - [x] Add a basic TUI.
+- [x] Handle bad URLs.
 - [ ] Add maximum redirect limits.
 - [ ] Handle HTTP errors properly.
 - [ ] Caching.

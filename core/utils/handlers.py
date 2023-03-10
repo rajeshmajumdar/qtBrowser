@@ -1,9 +1,7 @@
 from io import BytesIO
 
 from .constants import CONSTANTS
-from .schemes import reset_schemes, set_scheme
-from .errors import *
-
+from .errors import unsupported_url_scheme
 from .dev import DEBUG
 
 
@@ -12,7 +10,7 @@ class RequestHandler:
         self._url = url
 
     def _get_host_and_path(self, url: str):
-        host, path = self._url.split('/', 1)
+        host, path = url.split('/', 1)
         path = '/' + path
         self._port = 443
         if ":" in host:
@@ -38,7 +36,7 @@ class RequestHandler:
         elif CONSTANTS.SCHEME_IS_HTTPS:
             host, path = self._handle_https()
         else:
-            unsupported_url_scheme(scheme)
+            unsupported_url_scheme(self._url)
         return host, path
 
     def _handle_file(self):
@@ -58,6 +56,8 @@ class RequestHandler:
         elif CONSTANTS.SCHEME_IS_VIEW_SOURCE:
             host, path = self._handle_view_source()
             return host, self._port, path
+        else:
+            DEBUG("Bad url")
 
 
 class ResponseHandler:

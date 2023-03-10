@@ -18,4 +18,19 @@ class CONSTANTS:
     DEFAULT_HTML_FILE = 'file:///Users/s/Desktop/Projects/engines/browser/default.html'
 
     # Change this to True for debugging information
-    DEBUG = False
+    DEBUG = True
+
+    # Keybindings
+    KEYBINDING_QUIT = 'q'
+
+    AUTO_RESIZE = True
+    # Browser window dimensions
+    BROWSER_WIN_X = 1
+    BROWSER_WIN_Y = 1
+    BROWSER_WIN_WIDTH = 40
+    BROWSER_WIN_HEIGHT = 5
+    # Command window dimensions
+    COMMAND_WIN_X = 1
+    COMMAND_WIN_Y = 10
+    COMMAND_WIN_WIDTH = 40
+    COMMAND_WIN_HEIGHT = 1
